@@ -1,6 +1,7 @@
 *, ::after, ::before {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -57,7 +58,6 @@ h1 {
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
-  margin-bottom: 30px;
 }
 
 .main {
@@ -66,11 +66,13 @@ h1 {
 
 .card-list {
   display: flex;
-  flex: 1 1 auto;
-  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .card {
+  width: 21%;
   border: 1px solid #F3F3F3;
   border-radius: 40px;
   padding: 20px 20px 35px 20px;
@@ -86,7 +88,7 @@ h1 {
     left: -3px;
   }
 
-  img {
+  .card-image {
     width: 100%;
   }
 
