@@ -1,15 +1,45 @@
+import { useState, useEffect } from "react"
+
 import Drawer from "./components/Drawers"
 import Header from "./components/Header"
-import Footer from "./components/Footer";
+import Footer from "./components/Footer"
 import Card from "./components/Card"
 
-const sneakers = require('./dummyData/sneakers.json');
+// const sneakers = require('./dummyData/sneakers.json'); // dummy data
 
 function App() {
+  const [items, setItems] = useState([])
+  const [cartItems, setCartItems] = useState([])
+  const [cartOpened, setCartOpened] = useState(false);
+
+  useEffect(() => {
+    fetch("https://6292829b9d159855f08b926c.mockapi.io/items")
+    .then(res => {
+      return res.json()
+    })
+    .then((json) => {
+      setItems(json)
+    })
+  }, [])
+
+  const onAddToCart = (obj) => {
+    setCartItems(prev => [...prev, obj])
+  }
+
+  console.log(cartItems)
+
   return (
     <div className="wrapper">
-      <Drawer />
-      <Header />
+      {cartOpened &&
+        <Drawer
+          items={cartItems}
+          onClose={() => setCartOpened(false)}
+        />
+      }
+
+      <Header
+        onClickCart={() => setCartOpened(true)}
+      />
 
       <main className="main">
         <div className="section">
@@ -22,12 +52,15 @@ function App() {
         </div>
 
         <div className="card-list">
-          {sneakers.map((obj) =>
+          {items.map((item) =>
             <Card
-              key={obj.id}
-              title={obj.title}
-              price={obj.price}
-              imgUrl={obj.imgUrl}
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              price={item.price}
+              imgUrl={item.imgUrl}
+              onClickFavorite={() => console.log('Favorite')}
+              onClickAdd={onAddToCart}
             />
           )}
         </div>

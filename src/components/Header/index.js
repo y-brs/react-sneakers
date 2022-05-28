@@ -1,6 +1,6 @@
 import s from "./Header.module.scss"
 
-function Header() {
+function Header({ onClickCart }) {
   return (
     <header className={s.header}>
       <div className={s.headerLeft}>
@@ -14,7 +14,7 @@ function Header() {
       <div className={s.headerRight}>
         <ul>
           <li>
-            <a href="/">
+            <a href="##" onClick={onClickCart}>
               <img className={s.imgCart} src="/images/ico-cart.svg" width={20} height={20} alt="Cart" />
               <span>$200</span>
             </a>

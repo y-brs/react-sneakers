@@ -1,15 +1,24 @@
+import { useEffect, useState } from "react"
 import s from "./Card.module.scss"
 
-function Card({ title, price, imgUrl}) {
-  const onClickButton = () => {
-    alert("Click +")
+function Card({ id, title, price, imgUrl, onClickFavorite, onClickAdd }) {
+  const [isAdded, setIsAdded] = useState(false)
+
+  const onClickPlus = () => {
+    onClickAdd({ id, title, price, imgUrl })
+    setIsAdded(!isAdded)
   }
+
+  useEffect(() => {
+    // console.log("###")
+  }, [isAdded])
+
 
   return (
     <div className={s.card}>
       <div>
-        <button className={s.favorite}>
-          <img src="/images/ico-unliked.svg " width={30} height={30} alt="Like" />
+        <button className={s.favorite} onClick={onClickFavorite}>
+          <img src="/images/ico-unliked.svg " width={30} height={30} alt="Add to favorite" />
         </button>
 
         <img className={s.image} src={imgUrl} alt={title} />
@@ -23,8 +32,13 @@ function Card({ title, price, imgUrl}) {
           <p>${price}</p>
         </div>
 
-        <button className={s.buy} onClick={onClickButton}>
-          <img src="/images/ico-add.svg" width={32} height={32} alt="Add" />
+        <button onClick={onClickPlus}>
+          <img
+            src={isAdded ? "/images/ico-added.svg" : "/images/ico-add.svg"}
+            width={32}
+            height={32}
+            alt="Add to cart"
+          />
         </button>
       </div>
     </div>
