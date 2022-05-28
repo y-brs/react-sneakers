@@ -21,12 +21,12 @@ function Header({ onClickCart }) {
           </li>
           <li>
             <a href="/">
-              <img src="/images/ico-favorite.svg" width={20} height={20} alt="Cart" />
+              <img src="/images/ico-favorite.svg" width={20} height={20} alt="Favorite" />
             </a>
           </li>
           <li>
             <a href="/">
-              <img src="/images/ico-profile.svg" width={20} height={20} alt="Cart" />
+              <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />
             </a>
           </li>
         </ul>

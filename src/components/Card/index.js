@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import s from "./Card.module.scss"
 
 function Card({ id, title, price, imgUrl, onClickFavorite, onClickAdd }) {
@@ -8,11 +8,6 @@ function Card({ id, title, price, imgUrl, onClickFavorite, onClickAdd }) {
     onClickAdd({ id, title, price, imgUrl })
     setIsAdded(!isAdded)
   }
-
-  useEffect(() => {
-    // console.log("###")
-  }, [isAdded])
-
 
   return (
     <div className={s.card}>
