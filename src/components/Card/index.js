@@ -9,7 +9,7 @@ function Card({ title, price, imgUrl}) {
     <div className={s.card}>
       <div>
         <button className={s.favorite}>
-          <img src="/images/ico-unliked.png" width={32} height={32} alt="Like" />
+          <img src="/images/ico-unliked.svg " width={30} height={30} alt="Like" />
         </button>
 
         <img className={s.image} src={imgUrl} alt={title} />
