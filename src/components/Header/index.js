@@ -1,16 +1,21 @@
+import { Link } from "react-router-dom"
+
 import s from "./Header.module.scss"
 
 function Header({ onClickCart }) {
   return (
     <header className={s.header}>
-      <div className={s.headerLeft}>
-        <img src="/images/logo.svg" width={40} height={40} alt="React Sneakers Shop" />
+      <Link to="/">
+        <div className={s.headerLeft}>
+          <img src="/images/logo.svg" width={40} height={40} alt="React Sneakers Shop" />
 
-        <div className={s.headerInfo}>
-          <h3>React Sheakers</h3>
-          <p>Best sneakers shop</p>
+          <div className={s.headerInfo}>
+            <h3>React Sheakers</h3>
+            <p>Best sneakers shop</p>
+          </div>
         </div>
-      </div>
+      </Link>
+
       <div className={s.headerRight}>
         <ul>
           <li onClick={onClickCart}>
@@ -18,7 +23,9 @@ function Header({ onClickCart }) {
             <span>$200</span>
           </li>
           <li>
-            <img src="/images/ico-favorite.svg" width={20} height={20} alt="Favorite" />
+            <Link to="/favorites">
+              <img src="/images/ico-favorite.svg" width={22} height={19} alt="Favorite" />
+            </Link>
           </li>
           <li>
             <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />

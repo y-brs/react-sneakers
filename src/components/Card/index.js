@@ -1,9 +1,9 @@
 import { useState } from "react"
 import s from "./Card.module.scss"
 
-function Card({ id, title, price, imgUrl, onClickFavorite, onClickAdd }) {
+function Card({ id, title, price, imgUrl, onClickFavorite, onClickAdd, favorited = false }) {
   const [isAdded, setIsAdded] = useState(false)
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(favorited)
 
   const onClickPlus = () => {
     onClickAdd({ id, title, price, imgUrl })
