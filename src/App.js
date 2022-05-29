@@ -3,35 +3,41 @@ import axios from "axios"
 
 import Drawer from "./components/Drawers"
 import Header from "./components/Header"
-import Footer from "./components/Footer"
 import Card from "./components/Card"
+import Footer from "./components/Footer"
 
-const baseURL = "https://6292829b9d159855f08b926c.mockapi.io"
+const BASE_URL = process.env.REACT_APP_URL
 
 function App() {
   const [items, setItems] = useState([])
   const [cartItems, setCartItems] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [searchValue, setSearchValue] = useState("")
   const [cartOpened, setCartOpened] = useState(false)
 
   useEffect(() => {
-    axios.get(`${baseURL}/items`).then((res) => {
+    axios.get(`${BASE_URL}/items`).then((res) => {
       setItems(res.data)
     })
 
-    axios.get(`${baseURL}/cart`).then((res) => {
+    axios.get(`${BASE_URL}/cart`).then((res) => {
       setCartItems(res.data)
     })
   }, [])
 
   const onAddToCart = (obj) => {
-    axios.post(`${baseURL}/cart`, obj)
+    axios.post(`${BASE_URL}/cart`, obj)
     setCartItems(prev => [...prev, obj])
   }
 
   const onRemoveItem = (id) => {
-    axios.delete(`${baseURL}/cart/${id}`)
+    axios.delete(`${BASE_URL}/cart/${id}`)
     setCartItems(prev => prev.filter(item => item.id !== id))
+  }
+
+  const onFavorites = (obj) => {
+    axios.post(`${BASE_URL}/favorites`, obj)
+    setFavorites(prev => [...prev, obj])
   }
 
   const onChangeSearchInput = (e) => {
@@ -89,7 +95,7 @@ function App() {
                 title={item.title}
                 price={item.price}
                 imgUrl={item.imgUrl}
-                onClickFavorite={() => console.log('Favorite')}
+                onClickFavorite={onFavorites}
                 onClickAdd={onAddToCart}
               />
             )
