@@ -13,21 +13,15 @@ function Header({ onClickCart }) {
       </div>
       <div className={s.headerRight}>
         <ul>
-          <li>
-            <a href="/" onClick={onClickCart}>
-              <img className={s.imgCart} src="/images/ico-cart.svg" width={20} height={20} alt="Cart" />
-              <span>$200</span>
-            </a>
+          <li onClick={onClickCart}>
+            <img className={s.imgCart} src="/images/ico-cart.svg" width={20} height={20} alt="Cart" />
+            <span>$200</span>
           </li>
           <li>
-            <a href="/">
-              <img src="/images/ico-favorite.svg" width={20} height={20} alt="Favorite" />
-            </a>
+            <img src="/images/ico-favorite.svg" width={20} height={20} alt="Favorite" />
           </li>
           <li>
-            <a href="/">
-              <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />
-            </a>
+            <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />
           </li>
         </ul>
       </div>
