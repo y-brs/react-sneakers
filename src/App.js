@@ -1,28 +1,37 @@
 import { useState, useEffect } from "react"
+import axios from "axios"
 
 import Drawer from "./components/Drawers"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Card from "./components/Card"
 
+const baseURL = "https://6292829b9d159855f08b926c.mockapi.io"
+
 function App() {
   const [items, setItems] = useState([])
   const [cartItems, setCartItems] = useState([])
-  const [searchValue, setSearchValue] = useState()
+  const [searchValue, setSearchValue] = useState("")
   const [cartOpened, setCartOpened] = useState(false)
 
   useEffect(() => {
-    fetch("https://6292829b9d159855f08b926c.mockapi.io/items")
-    .then(res => {
-      return res.json()
+    axios.get(`${baseURL}/items`).then((res) => {
+      setItems(res.data)
     })
-    .then((json) => {
-      setItems(json)
+
+    axios.get(`${baseURL}/cart`).then((res) => {
+      setCartItems(res.data)
     })
   }, [])
 
   const onAddToCart = (obj) => {
+    axios.post(`${baseURL}/cart`, obj)
     setCartItems(prev => [...prev, obj])
+  }
+
+  const onRemoveItem = (id) => {
+    axios.delete(`${baseURL}/cart/${id}`)
+    setCartItems(prev => prev.filter(item => item.id !== id))
   }
 
   const onChangeSearchInput = (e) => {
@@ -39,12 +48,11 @@ function App() {
         <Drawer
           items={cartItems}
           onClose={() => setCartOpened(false)}
+          onRemove={onRemoveItem}
         />
       }
 
-      <Header
-        onClickCart={() => setCartOpened(true)}
-      />
+      <Header onClickCart={() => setCartOpened(true)} />
 
       <main className="main">
         <div className="section">

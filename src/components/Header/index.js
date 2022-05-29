@@ -14,7 +14,7 @@ function Header({ onClickCart }) {
       <div className={s.headerRight}>
         <ul>
           <li>
-            <a href="##" onClick={onClickCart}>
+            <a href="/" onClick={onClickCart}>
               <img className={s.imgCart} src="/images/ico-cart.svg" width={20} height={20} alt="Cart" />
               <span>$200</span>
             </a>
