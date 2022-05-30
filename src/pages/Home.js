@@ -1,47 +1,62 @@
 import Card from "../components/Card"
 
-export default function Home({ searchValue,  clearSearchInput, onChangeSearchInput, items, onFavorites, onAddToCart }) {
-  return (
-    <>
-      <main className="main">
-        <div className="section">
-          <h1>{searchValue ? `Search for: ${searchValue}` : "All Sneakers"}</h1>
+function Home({
+  items,
+  searchValue,
+  clearSearchInput,
+  onChangeSearchInput,
+  onFavorites,
+  onAddToCart,
+  isLoading
+}) {
+  const renderItems = () => {
+    const filtredItems = items.filter((item) =>
+      item.title.toLowerCase().includes(searchValue.toLowerCase()),
+    )
 
-          <div className="search-block">
-            <img src="/images/ico-search.svg" alt="Search" />
+    return (isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
+      <Card
+        key={index}
+        onClickFavorite={onFavorites}
+        onClickAdd={onAddToCart}
+        loading={isLoading}
+        {...item}
+      />
+      ))
+  }
 
-            {searchValue &&
-              <img
-                onClick={clearSearchInput}
-                className="search-delete"
-                src="/images/ico-delete.svg"
-                alt="Clear"
-              />
-            }
+return (
+  <>
+    <main className="main">
+      <div className="section">
+        <h1>{searchValue ? `Search for: ${searchValue}` : "All Sneakers"}</h1>
 
-            <input
-              onChange={onChangeSearchInput}
-              value={searchValue}
-              type="text"
-              placeholder="Search..."
+        <div className="search-block">
+          <img src="/images/ico-search.svg" alt="Search" />
+
+          {searchValue &&
+            <img
+              onClick={clearSearchInput}
+              className="search-delete"
+              src="/images/ico-delete.svg"
+              alt="Clear"
             />
-          </div>
-        </div>
-
-        <div className="card-list">
-          {items
-            .filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()))
-            .map((item) =>
-              <Card
-                key={item.id}
-                onClickFavorite={onFavorites}
-                onClickAdd={onAddToCart}
-                {...item}
-              />
-            )
           }
+
+          <input
+            onChange={onChangeSearchInput}
+            value={searchValue}
+            type="text"
+            placeholder="Search..."
+          />
         </div>
-      </main>
-    </>
-  )
-}
+      </div>
+
+      <div className="card-list">
+        {renderItems()}
+      </div>
+    </main>
+  </>
+)}
+
+export default Home

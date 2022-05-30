@@ -9,17 +9,15 @@ export default function Favorites({ favorites, onFavorites, onAddToCart }) {
         </div>
 
         <div className="card-list">
-          {favorites
-            .map((item) =>
-              <Card
-                key={item.id}
-                onClickFavorite={onFavorites}
-                onClickAdd={onAddToCart}
-                favorited={true}
-                {...item}
-              />
-            )
-          }
+          {favorites.map((item) =>
+            <Card
+              key={item.id}
+              onClickFavorite={onFavorites}
+              onClickAdd={onAddToCart}
+              favorited={true}
+              {...item}
+            />
+          )}
         </div>
       </main>
     </>

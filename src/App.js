@@ -17,35 +17,45 @@ function App() {
   const [favorites, setFavorites] = useState([])
   const [searchValue, setSearchValue] = useState("")
   const [cartOpened, setCartOpened] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/items`).then((res) => {
-      setItems(res.data)
-    })
+    async function fetchData() {
+      setIsLoading(true)
 
-    axios.get(`${BASE_URL}/cart`).then((res) => {
-      setCartItems(res.data)
-    })
+      const cartResponse = await axios.get(`${BASE_URL}/cart`)
+      const favoritesResponse = await axios.get(`${BASE_URL}/favorites`)
+      const itemsResponse = await axios.get(`${BASE_URL}/items`)
 
-    axios.get(`${BASE_URL}/favorites`).then((res) => {
-      setFavorites(res.data)
-    })
+      setIsLoading(false)
+      setCartItems(cartResponse.data)
+      setFavorites(favoritesResponse.data)
+      setItems(itemsResponse.data)
+    }
+
+    fetchData()
   }, [])
 
   const onAddToCart = (obj) => {
-    axios.post(`${BASE_URL}/cart`, obj)
-    setCartItems(prev => [...prev, obj])
+    if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+      axios.delete(`${BASE_URL}/cart/${obj.id}`)
+      setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
+    } else {
+      axios.post(`${BASE_URL}/cart`, obj)
+      setCartItems((prev) => [...prev, obj])
+    }
   }
 
   const onRemoveItem = (id) => {
     axios.delete(`${BASE_URL}/cart/${id}`)
-    setCartItems(prev => prev.filter(item => item.id !== id))
+    setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))
   }
 
   const onFavorites = async (obj) => {
     try {
       if (favorites.find(favObj => favObj.id === obj.id)) {
         axios.delete(`${BASE_URL}/favorites/${obj.id}`)
+        // delete item from state
         // setFavorites(prev => prev.filter(item => item.id !== obj.id))
       } else {
         const { data } = await axios.post(`${BASE_URL}/favorites`, obj)
@@ -81,11 +91,13 @@ function App() {
           {
             <Home
               items={items}
+              cartItems={cartItems}
               searchValue={searchValue}
               clearSearchInput={clearSearchInput}
               onChangeSearchInput={onChangeSearchInput}
               onFavorites={onFavorites}
               onAddToCart={onAddToCart}
+              isLoading={isLoading}
             />
           }
         />
