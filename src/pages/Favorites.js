@@ -1,6 +1,11 @@
+import { useContext } from "react"
 import Card from "../components/Card"
 
-export default function Favorites({ favorites, onFavorites, onAddToCart }) {
+import { AppContext } from "../App"
+
+function Favorites() {
+  const {favorites, onFavorites, onAddToCart} = useContext(AppContext)
+
   return (
     <>
       <main className="main">
@@ -23,3 +28,5 @@ export default function Favorites({ favorites, onFavorites, onAddToCart }) {
     </>
   )
 }
+
+export default Favorites

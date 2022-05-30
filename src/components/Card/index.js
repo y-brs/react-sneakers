@@ -1,30 +1,30 @@
-import { useState } from "react"
-
+import { useState, useContext } from "react"
 import ContentLoader from 'react-content-loader';
+
+import { AppContext } from "../../App"
 
 import s from "./Card.module.scss"
 
 function Card({
   id,
   title,
-  price,
   imgUrl,
+  price,
   onClickFavorite,
   onClickAdd,
-  added = false,
   favorited = false,
   loading = false
 }) {
-  const [isAdded, setIsAdded] = useState(added)
+  const { isItemAdded } = useContext(AppContext)
   const [isFavorite, setIsFavorite] = useState(favorited)
 
   const onClickPlus = () => {
-    onClickAdd({ id, title, price, imgUrl })
-    setIsAdded(!isAdded)
+    onClickAdd({ id, title, imgUrl, price })
+
   }
 
   const onClickLike = () => {
-    onClickFavorite({ id, title, price, imgUrl })
+    onClickFavorite({ id, title, imgUrl, price })
     setIsFavorite(!isFavorite)
   }
 
@@ -59,7 +59,13 @@ function Card({
               />
             </button>
 
-            <img className={s.image} src={imgUrl} alt={title} />
+            <img
+              className={s.image}
+              src={imgUrl}
+              width={168}
+              height={142}
+              alt={title}
+            />
           </div>
 
           <h5>{title}</h5>
@@ -72,7 +78,7 @@ function Card({
 
             <button onClick={onClickPlus}>
               <img
-                src={isAdded ? "/images/ico-added.svg" : "/images/ico-add.svg"}
+                src={isItemAdded(id) ? "/images/ico-added.svg" : "/images/ico-add.svg"}
                 width={32}
                 height={32}
                 alt="Add to cart"

@@ -17,8 +17,8 @@ function Home({
     return (isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
       <Card
         key={index}
-        onClickFavorite={onFavorites}
-        onClickAdd={onAddToCart}
+        onClickFavorite={(obj) => onFavorites(obj)}
+        onClickAdd={(obj) => onAddToCart(obj)}
         loading={isLoading}
         {...item}
       />

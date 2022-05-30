@@ -1,0 +1,40 @@
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 285px;
+  margin: 0 auto 60px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  strong {
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 27px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 24px;
+    color: #999;
+    margin: 10px 0 40px;
+  }
+
+  button {
+    width: 245px;
+
+    img {
+      left: 30px;
+      transform: rotate(180deg) translateX(0);
+    }
+
+    &:hover {
+      img {
+        transform: rotate(180deg) translateX(5px);
+      }
+    }
+  }
+}

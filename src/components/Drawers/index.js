@@ -1,6 +1,45 @@
+import { useContext, useState } from "react"
+import axios from "axios"
+
+import { AppContext } from "../../App"
+import { BASE_URL } from "../../App"
+
 import s from "./Drawer.module.scss"
 
+import Info from "../../pages/Info"
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 function Drawer({ onClose, onRemove, items = [] }) {
+  const { cartItems, setCartItems } = useContext(AppContext)
+  const [orderId, setOrderId] = useState(null)
+  const [isOrderComplete, setIsOrderComplete] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true)
+
+      const { data } = await axios.post(`${BASE_URL}/orders/`, {
+        items: cartItems,
+      })
+
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        await axios.delete('/cart/' + item.id);
+        await delay(1000);
+      }
+
+      setOrderId(data.id)
+      setIsOrderComplete(true)
+      setCartItems([])
+    } catch (error) {
+      console.log("Doh!")
+    }
+
+    setIsLoading(false)
+  }
+
   return (
     <div className={s.overlay}>
       <div className={s.drawer}>
@@ -41,22 +80,25 @@ function Drawer({ onClose, onRemove, items = [] }) {
               </li>
             </ul>
 
-            <button className="button-green">
+            <button
+              disabled={isLoading}
+              onClick={onClickOrder}
+              className="button-green"
+            >
               Place order
               <img src="/images/ico-arrow.svg" width={14} height={12} alt="Place order" />
             </button>
           </>
         ) : (
-          <div className={s.empty}>
-            <img src="/images/empty.png" width={120} height={120} alt="Cart is empty" />
-            <strong>Cart is empty</strong>
-            <p>Add at least one pair <nobr>of sneakers</nobr> <nobr>to place</nobr> an order.</p>
-
-            <button onClick={onClose} className="button-green">
-              Close cart
-              <img src="/images/ico-arrow.svg" width={14} height={12} alt="Close cart" />
-            </button>
-          </div>
+          <Info
+            title={isOrderComplete ? "Thank you!" : "Cart is empty"}
+            image={isOrderComplete ? "/images/complete.png" : "/images/empty.png"}
+            description={
+              isOrderComplete
+                ? `Your order #${orderId} has been placed and will be delivered as soon as possible`
+                : "Add at least one pair of sneakers to place an order."
+            }
+          />
         )}
 
       </div>
