@@ -10,8 +10,8 @@ function Card({
   title,
   imgUrl,
   price,
-  onClickFavorite,
-  onClickAdd,
+  onFavorite,
+  onPlus,
   favorited = false,
   loading = false
 }) {
@@ -19,12 +19,11 @@ function Card({
   const [isFavorite, setIsFavorite] = useState(favorited)
 
   const onClickPlus = () => {
-    onClickAdd({ id, title, imgUrl, price })
-
+    onPlus({ id, title, imgUrl, price })
   }
 
-  const onClickLike = () => {
-    onClickFavorite({ id, title, imgUrl, price })
+  const onClickFavorite = () => {
+    onFavorite({ id, title, imgUrl, price })
     setIsFavorite(!isFavorite)
   }
 
@@ -49,13 +48,13 @@ function Card({
           <div>
             <button
               className={s.favorite}
-              onClick={onClickLike}
+              onClick={onClickFavorite}
             >
               <img
                 src={isFavorite ? "/images/ico-liked.svg" : "/images/ico-unliked.svg"}
                 width={30}
                 height={30}
-                alt="Add to favorite"
+                alt={isFavorite ? "Remove from favorite" : "Add to favorite"}
               />
             </button>
 
@@ -81,7 +80,7 @@ function Card({
                 src={isItemAdded(id) ? "/images/ico-added.svg" : "/images/ico-add.svg"}
                 width={32}
                 height={32}
-                alt="Add to cart"
+                alt={isItemAdded(id) ? "Remove from cart" : "Add to cart"}
               />
             </button>
           </div>

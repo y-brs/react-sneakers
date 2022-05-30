@@ -1,11 +1,11 @@
-import Card from "../components/Card"
+import Card from "../../components/Card"
 
 function Home({
   items,
   searchValue,
   clearSearchInput,
   onChangeSearchInput,
-  onFavorites,
+  onAddToFavorite,
   onAddToCart,
   isLoading
 }) {
@@ -17,8 +17,8 @@ function Home({
     return (isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
       <Card
         key={index}
-        onClickFavorite={(obj) => onFavorites(obj)}
-        onClickAdd={(obj) => onAddToCart(obj)}
+        onFavorite={(obj) => onAddToFavorite(obj)}
+        onPlus={(obj) => onAddToCart(obj)}
         loading={isLoading}
         {...item}
       />

@@ -20,6 +20,7 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
+      // !! TODO: Make try catch + Promise.all
       setIsLoading(true)
 
       const cartResponse = await axios.get(`${BASE_URL}/cart`)
@@ -50,9 +51,9 @@ function App() {
     setCartItems((prev) => prev.filter((item) => item.id !== id))
   }
 
-  const onFavorites = async (obj) => {
+  const onAddToFavorite = async (obj) => {
     try {
-      if (favorites.find(favObj => Number(favObj.id) === Number(obj.id))) {
+      if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
         axios.delete(`${BASE_URL}/favorites/${obj.id}`)
         setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)));
       } else {
@@ -83,8 +84,7 @@ function App() {
         cartItems,
         favorites,
         isItemAdded,
-        onFavorites,
-        onAddToCart,
+        onAddToFavorite,
         setCartOpened,
         setCartItems
       }}>
@@ -108,18 +108,14 @@ function App() {
                 searchValue={searchValue}
                 clearSearchInput={clearSearchInput}
                 onChangeSearchInput={onChangeSearchInput}
-                onFavorites={onFavorites}
+                onAddToFavorite={onAddToFavorite}
                 onAddToCart={onAddToCart}
                 isLoading={isLoading}
               />
             }
           />
 
-          <Route path="/favorites" exact element=
-            {
-              <Favorites />
-            }
-          />
+          <Route path="/favorites" exact element={<Favorites />} />
         </Routes>
 
         <Footer />
