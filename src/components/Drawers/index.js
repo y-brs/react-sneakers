@@ -9,7 +9,7 @@ import { BASE_URL } from "../../App"
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ onClose, onRemove, items = [] }) {
+function Drawer({ onClose, onRemove, items = [], opened }) {
   const { cartItems, setCartItems, totalPrice } = useCart()
   const [orderId, setOrderId] = useState(null)
   const [isOrderComplete, setIsOrderComplete] = useState(false)
@@ -40,8 +40,8 @@ function Drawer({ onClose, onRemove, items = [] }) {
   }
 
   return (
-    <div className={s.overlay}>
-      <div className={s.drawer}>
+    <div className={`${s.overlay} ${opened ? s.overlayVisible : ""}`}>
+      <div className={`${s.drawer} ${opened ? s.drawerVisible : ""}`}>
         <h2>
           Cart
           <img onClick={onClose} src="/images/ico-remove.svg" width={32} height={32} alt="Close cart" />
