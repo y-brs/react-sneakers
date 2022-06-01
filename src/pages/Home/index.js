@@ -22,7 +22,7 @@ function Home({
         loading={isLoading}
         {...item}
       />
-      ))
+    ))
   }
 
 return (

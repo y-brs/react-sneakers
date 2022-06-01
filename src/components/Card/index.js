@@ -1,6 +1,5 @@
 import { useState, useContext } from "react"
 import ContentLoader from 'react-content-loader';
-
 import { AppContext } from "../../App"
 
 import s from "./Card.module.scss"
@@ -46,17 +45,19 @@ function Card({
       ) : (
         <>
           <div>
-            <button
-              className={s.favorite}
-              onClick={onClickFavorite}
-            >
-              <img
-                src={isFavorite ? "/images/ico-liked.svg" : "/images/ico-unliked.svg"}
-                width={30}
-                height={30}
-                alt={isFavorite ? "Remove from favorite" : "Add to favorite"}
-              />
-            </button>
+            {onFavorite &&
+              <button
+                className={s.favorite}
+                onClick={onClickFavorite}
+              >
+                <img
+                  src={isFavorite ? "/images/ico-liked.svg" : "/images/ico-unliked.svg"}
+                  width={30}
+                  height={30}
+                  alt={isFavorite ? "Remove from favorite" : "Add to favorite"}
+                />
+              </button>
+            }
 
             <img
               className={s.image}
@@ -75,14 +76,16 @@ function Card({
               <p>${price}</p>
             </div>
 
-            <button onClick={onClickPlus}>
-              <img
-                src={isItemAdded(id) ? "/images/ico-added.svg" : "/images/ico-add.svg"}
-                width={32}
-                height={32}
-                alt={isItemAdded(id) ? "Remove from cart" : "Add to cart"}
-              />
-            </button>
+            {onPlus &&
+              <button onClick={onClickPlus}>
+                <img
+                  src={isItemAdded(id) ? "/images/ico-added.svg" : "/images/ico-add.svg"}
+                  width={32}
+                  height={32}
+                  alt={isItemAdded(id) ? "Remove from cart" : "Add to cart"}
+                />
+              </button>
+            }
           </div>
         </>
       )}

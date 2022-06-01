@@ -1,17 +1,16 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
+import { useCart } from "../../hooks/useCart"
 import axios from "axios"
-
-import { AppContext } from "../../App"
-import { BASE_URL } from "../../App"
+import Info from "../../pages/Info"
 
 import s from "./Drawer.module.scss"
 
-import Info from "../../pages/Info"
+import { BASE_URL } from "../../App"
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function Drawer({ onClose, onRemove, items = [] }) {
-  const { cartItems, setCartItems } = useContext(AppContext)
+  const { cartItems, setCartItems, totalPrice } = useCart()
   const [orderId, setOrderId] = useState(null)
   const [isOrderComplete, setIsOrderComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -26,7 +25,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
 
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-        await axios.delete('/cart/' + item.id);
+        await axios.delete('/cart/' + Number(item.id));
         await delay(1000);
       }
 
@@ -71,12 +70,12 @@ function Drawer({ onClose, onRemove, items = [] }) {
               <li>
                 <span>Total:</span>
                 <div></div>
-                <b>$200</b>
+                <b>${totalPrice}</b>
               </li>
               <li>
                 <span>Tax 5%:</span>
                 <div></div>
-                <b>$10</b>
+                <b>${Math.round((totalPrice / 100) * 5)}</b>
               </li>
             </ul>
 

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom"
-
+import { useCart } from "../../hooks/useCart"
 import s from "./Header.module.scss"
 
 function Header({ onClickCart }) {
+  const { totalPrice } = useCart()
+
   return (
     <header className={s.header}>
       <Link to="/">
@@ -20,7 +22,7 @@ function Header({ onClickCart }) {
         <ul>
           <li onClick={onClickCart}>
             <img className={s.imgCart} src="/images/ico-cart.svg" width={20} height={20} alt="Cart" />
-            <span>$200</span>
+            {totalPrice > 0 && (<span>${totalPrice}</span>)}
           </li>
           <li>
             <Link to="/favorites">
@@ -28,7 +30,9 @@ function Header({ onClickCart }) {
             </Link>
           </li>
           <li>
-            <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />
+            <Link to="/orders">
+              <img src="/images/ico-profile.svg" width={20} height={20} alt="Profile" />
+            </Link>
           </li>
         </ul>
       </div>

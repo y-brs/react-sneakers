@@ -4,8 +4,10 @@ import axios from "axios"
 import Drawer from "./components/Drawers"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
+
 import Home from "./pages/Home"
 import Favorites from "./pages/Favorites"
+import Orders from "./pages/Orders"
 
 export const AppContext = createContext({})
 export const BASE_URL = process.env.REACT_APP_URL
@@ -85,6 +87,7 @@ function App() {
         favorites,
         isItemAdded,
         onAddToFavorite,
+        onAddToCart,
         setCartOpened,
         setCartItems
       }}>
@@ -116,6 +119,8 @@ function App() {
           />
 
           <Route path="/favorites" exact element={<Favorites />} />
+
+          <Route path="/orders" exact element={<Orders />} />
         </Routes>
 
         <Footer />
