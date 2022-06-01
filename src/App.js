@@ -22,35 +22,60 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      // !! TODO: Make try catch + Promise.all
-      setIsLoading(true)
+      try {
+        const [cartResponse, favoritesResponse, itemsResponse] = await Promise.all([
+          axios.get(`${BASE_URL}/cart`),
+          axios.get(`${BASE_URL}/favorites`),
+          axios.get(`${BASE_URL}/items`)
+        ])
 
-      const cartResponse = await axios.get(`${BASE_URL}/cart`)
-      const favoritesResponse = await axios.get(`${BASE_URL}/favorites`)
-      const itemsResponse = await axios.get(`${BASE_URL}/items`)
-
-      setIsLoading(false)
-      setCartItems(cartResponse.data)
-      setFavorites(favoritesResponse.data)
-      setItems(itemsResponse.data)
+        setIsLoading(false)
+        setCartItems(cartResponse.data)
+        setFavorites(favoritesResponse.data)
+        setItems(itemsResponse.data)
+      } catch (error) {
+        console.log("Error with request data!")
+      }
     }
 
     fetchData()
   }, [])
 
-  const onAddToCart = (obj) => {
-    if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-      axios.delete(`${BASE_URL}/cart/${obj.id}`)
-      setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
-    } else {
-      axios.post(`${BASE_URL}/cart`, obj)
-      setCartItems((prev) => [...prev, obj])
+  const onAddToCart = async (obj) => {
+    try {
+      const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id));
+
+      if (findItem) {
+        setCartItems((prev) => prev.filter((item) => Number(item.parentId) !== Number(obj.id)))
+        await axios.delete(`${BASE_URL}/cart/${findItem.id}`)
+      } else {
+        setCartItems((prev) => [...prev, obj])
+
+        const { data } = await axios.post(`${BASE_URL}/cart`, obj)
+        setCartItems((prev) =>
+          prev.map((item) => {
+            if (item.parentId === data.parentId) {
+              return {
+                ...item,
+                id: data.id,
+              };
+            }
+            return item;
+          })
+        )
+      }
+    } catch (error) {
+      console.log("Error with request data!")
     }
   }
 
-  const onRemoveItem = (id) => {
-    axios.delete(`${BASE_URL}/cart/${id}`)
-    setCartItems((prev) => prev.filter((item) => item.id !== id))
+  const onRemoveItem = async (id) => {
+    try {
+      setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))
+      await axios.delete(`${BASE_URL}/cart/${id}`)
+    } catch (error) {
+      console.log("Failed to remove cart!")
+    }
   }
 
   const onAddToFavorite = async (obj) => {
@@ -71,12 +96,8 @@ function App() {
     setSearchValue(e.target.value)
   }
 
-  const clearSearchInput = () => {
-    setSearchValue("")
-  }
-
   const isItemAdded = (id) => {
-    return cartItems.some((obj) => Number(obj.od) === Number(id))
+    return cartItems.some((obj) => Number(obj.parentId) === Number(id))
   }
 
   return (
@@ -102,13 +123,13 @@ function App() {
         <Header onClickCart={() => setCartOpened(true)} />
 
         <Routes>
-          <Route path="/" exact element=
+          <Route path="" exact element=
             {
               <Home
                 items={items}
                 cartItems={cartItems}
                 searchValue={searchValue}
-                clearSearchInput={clearSearchInput}
+                setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
                 onAddToFavorite={onAddToFavorite}
                 onAddToCart={onAddToCart}

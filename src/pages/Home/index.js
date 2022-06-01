@@ -3,7 +3,7 @@ import Card from "../../components/Card"
 function Home({
   items,
   searchValue,
-  clearSearchInput,
+  setSearchValue,
   onChangeSearchInput,
   onAddToFavorite,
   onAddToCart,
@@ -36,7 +36,7 @@ return (
 
           {searchValue &&
             <img
-              onClick={clearSearchInput}
+              onClick={() => setSearchValue("")}
               className="search-delete"
               src="/images/ico-delete.svg"
               alt="Clear"

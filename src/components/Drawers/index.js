@@ -19,21 +19,21 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
     try {
       setIsLoading(true)
 
-      const { data } = await axios.post(`${BASE_URL}/orders/`, {
+      const { data } = await axios.post(`${BASE_URL}/orders`, {
         items: cartItems,
       })
-
-      for (let i = 0; i < cartItems.length; i++) {
-        const item = cartItems[i];
-        await axios.delete('/cart/' + Number(item.id));
-        await delay(1000);
-      }
 
       setOrderId(data.id)
       setIsOrderComplete(true)
       setCartItems([])
+
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i]
+        await axios.delete("/cart/" + item.id)
+        await delay(1000)
+      }
     } catch (error) {
-      console.log("Doh!")
+      console.log("Error while create order!")
     }
 
     setIsLoading(false)
