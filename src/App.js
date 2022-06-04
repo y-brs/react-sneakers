@@ -82,7 +82,7 @@ function App() {
     try {
       if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
         axios.delete(`${BASE_URL}/favorites/${obj.id}`)
-        setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)));
+        setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
       } else {
         const { data } = await axios.post(`${BASE_URL}/favorites`, obj)
         setFavorites((prev) => [...prev, data])
@@ -123,7 +123,7 @@ function App() {
         <Header onClickCart={() => setCartOpened(true)} />
 
         <Routes>
-          <Route path="" exact element=
+          <Route path="/" exact element=
             {
               <Home
                 items={items}

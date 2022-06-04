@@ -16,6 +16,7 @@ function Card({
 }) {
   const { isItemAdded } = useContext(AppContext)
   const [isFavorite, setIsFavorite] = useState(favorited)
+
   const obj = { id, parentId: id, title, imgUrl, price }
 
   const onClickPlus = () => {
@@ -46,7 +47,7 @@ function Card({
       ) : (
         <>
           <div>
-            {onFavorite &&
+            {onFavorite && (
               <button
                 className={s.favorite}
                 onClick={onClickFavorite}
@@ -58,7 +59,7 @@ function Card({
                   alt={isFavorite ? "Remove from favorite" : "Add to favorite"}
                 />
               </button>
-            }
+            )}
 
             <img
               className={s.image}
