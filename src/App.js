@@ -43,7 +43,7 @@ function App() {
 
   const onAddToCart = async (obj) => {
     try {
-      const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id));
+      const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id))
 
       if (findItem) {
         setCartItems((prev) => prev.filter((item) => Number(item.parentId) !== Number(obj.id)))
@@ -58,9 +58,10 @@ function App() {
               return {
                 ...item,
                 id: data.id,
-              };
+              }
             }
-            return item;
+
+            return item
           })
         )
       }
@@ -79,13 +80,28 @@ function App() {
   }
 
   const onAddToFavorite = async (obj) => {
+    const favItem = favorites.find((item) => Number(item.parentId) === Number(obj.id))
+
     try {
-      if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
-        axios.delete(`${BASE_URL}/favorites/${obj.id}`)
-        setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
+      if (favItem) {
+        setFavorites((prev) => prev.filter((item) => Number(item.parentId) !== Number(obj.id)))
+        await axios.delete(`${BASE_URL}/favorites/${favItem.id}`)
       } else {
+        setFavorites((prev) => [...prev, obj])
+
         const { data } = await axios.post(`${BASE_URL}/favorites`, obj)
-        setFavorites((prev) => [...prev, data])
+        setFavorites((prev) =>
+          prev.map((item) => {
+            if (item.parentId === data.parentId) {
+              return {
+                ...item,
+                id: data.id,
+              }
+            }
+
+            return item
+          })
+        )
       }
     } catch (error) {
       console.log("Failed to add to favorites!")
@@ -100,6 +116,10 @@ function App() {
     return cartItems.some((obj) => Number(obj.parentId) === Number(id))
   }
 
+  const isItemFavorite = (id) => {
+    return favorites.some((obj) => Number(obj.parentId) === Number(id))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -107,6 +127,7 @@ function App() {
         cartItems,
         favorites,
         isItemAdded,
+        isItemFavorite,
         onAddToFavorite,
         onAddToCart,
         setCartOpened,

@@ -5,7 +5,7 @@ import Card from "../../components/Card"
 import Empty from "../Empty"
 
 function Favorites() {
-  const { favorites, onAddToFavorite } = useContext(AppContext)
+  const { favorites } = useContext(AppContext)
 
   return (
     <main className="main">
@@ -20,7 +20,6 @@ function Favorites() {
               <Card
                 key={index}
                 favorited={true}
-                onFavorite={onAddToFavorite}
                 {...item}
               />
             )}

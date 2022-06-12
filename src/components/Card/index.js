@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useContext } from "react"
 import ContentLoader from 'react-content-loader';
 import { AppContext } from "../../App"
 
@@ -14,8 +14,7 @@ function Card({
   favorited = false,
   loading = false
 }) {
-  const { isItemAdded } = useContext(AppContext)
-  const [isFavorite, setIsFavorite] = useState(favorited)
+  const { isItemAdded, isItemFavorite } = useContext(AppContext)
 
   const obj = { id, parentId: id, title, imgUrl, price }
 
@@ -25,7 +24,6 @@ function Card({
 
   const onClickFavorite = () => {
     onFavorite(obj)
-    setIsFavorite(!isFavorite)
   }
 
   return (
@@ -53,10 +51,10 @@ function Card({
                 onClick={onClickFavorite}
               >
                 <img
-                  src={isFavorite ? "/images/ico-liked.svg" : "/images/ico-unliked.svg"}
+                  src={isItemFavorite(id) ? "/images/ico-liked.svg" : "/images/ico-unliked.svg"}
                   width={30}
                   height={30}
-                  alt={isFavorite ? "Remove from favorite" : "Add to favorite"}
+                  alt={isItemFavorite(id) ? "Remove from favorite" : "Add to favorite"}
                 />
               </button>
             )}
